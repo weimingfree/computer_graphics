@@ -1,0 +1,48 @@
+1.创建工程
+2.窗口分割
+1）插入一个dialog；修改其属性（idd,style,border）；为其映射一个类，注意基类的选择 CFormView；然后再加上两个button,修改它们的名字，至于它们的id需不需要改？（先不改）；
+     可以双击这个button然后类的h和cpp中就有了点击button这个函数。
+2）窗口分割，给CMainFrame函数添加一个OnCreateClient虚函数，然后把相关代码复制进去；然后再CMainFrame中添加一个变量，CMainFrame.cpp添加一个
+     ControlSelect头文件。
+	相关代码：
+	if (!m_wndSplit.CreateStatic(this, 1, 2)) return 0;
+
+	if (!m_wndSplit.CreateView(0, 0, pContext->m_pNewViewClass,
+		CSize(650, 100), pContext))
+		return 0;
+	if (!m_wndSplit.CreateView(0, 1, RUNTIME_CLASS(cgControlSelect),
+		CSize(100, 50), pContext))
+		return 0;
+	ShowWindow(SW_SHOWMAXIMIZED);
+	return TRUE;
+	相关变量：
+	CSplitterWnd m_wndSplit;
+3.修改view.h 和view.cpp
+1）在cpp里添加了一个点阵变量，初始化了两个变量，添加了一大堆函数的内容；在h里面添加了一堆变量，一些函数的声明。
+	问题：仍然发先有四个函数的声明不存在。
+	这四个函数是消息映射函数，要在类向导中添加，但实际上也可以在h中手动添加四个消息映射声明。我发现类向导生成的create函数前是int，而文件里是void，
+	还是用类向导吧。
+	仍然发现有一个变量爆红，先不管，继续看视频
+2)对于double block中的if else 先注释掉，最开始的那个pDoc也不需要，当然有了目前也不影响什么
+	目前运行可以交互，双击图形画完
+3）添加7个函数（在第一步已经添加）对于第7个函数的for循环，封后4解前2，将double bolck的if的执行语句解开。
+	此时运行画完多边形双击会用黑色进行填充
+4）在doc下定义一个变量，初始化变量m_opSelect
+5)给controlSelect添加类向导，推测是要添加onclicked，我已经添加过了.然后给两个消息处理函数增加函数内容。
+6）将double click里的if else 全部放开。
+7）需要将if else稍加修改并给这个函数再加一行代码。
+
+
+4.现在运行是画完图形双击没有任何操作，点一次有序边填充，然后再画一个图形完后会填黑（仅一次）
+1）将种子填充的按钮函数中变量修改为1（自己先改的）
+2）在view中增加点阵图案a，对于第七个函数放后4封前2.
+	此时再运行点击有序边填充画完图形双击就会以图案填充图形。
+5.补充一个信息反馈机制
+添加一个static按钮
+修改ID（要不要修改ID呢，我修改之后非常容易出现爆红,但不修改发现类向导找不到这个变量）
+修改Caption
+修改默认值
+添加类向导，修改控件value，给控件的对象起个名字。
+这个时候往往会出现爆红,把这个控件的ID再改回原名。
+在按钮点击消息函数里增加代码处理
+此时运行会有报错，是前面改名字的问题，再把名字改一遍改回第二个名字，发现不仅报红没有了，报错也没有了。
